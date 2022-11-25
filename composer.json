@@ -1,5 +1,5 @@
 {
-    "name": "madesimple/php-form-validator",
+    "name": "caasi-co-zw/form-validation",
     "description": "Simple, extendable form validator for multi-dimensional forms",
     "type": "library",
     "require": {
@@ -14,6 +14,10 @@
         {
             "name": "Peter Scopes",
             "email": "peter.scopes@gmail.com"
+        },
+        {
+            "name": "Isaac Machakata",
+            "email": "isaac@caasi.co.zw"
         }
     ],
     "autoload": {
