@@ -1,27 +1,32 @@
 # php-form-validator
+
+**UNDER DEVELOPMENT**
 [![PHPUnit](https://github.com/pdscopes/php-form-validator/actions/workflows/phpunit.yml/badge.svg)](https://github.com/pdscopes/php-form-validator/actions/workflows/phpunit.yml)
 
 Simple, extendable form validator for multi-dimensional forms
 
 ## Installation
+
 PHP Form Validator is available on [Packagist](https://packagist.org/packages/madesimple/php-form-validator) (using semantic versioning), and installation via [Composer](https://getcomposer.org) is the recommended way to install.
 Just add this line to your `composer.json` file:
 
-```
-"madesimple/php-form-validator": "^2.8"
+```json
+"caasi-co-zw/form-validation":">=1.0"
 ```
 
 or run:
 
 ```shell
-composer require madesimple/php-form-validator
+composer require caasi-co-zw/form-validation
 ```
 
 ## Validation Rules
+
 Validation rules are an associative array of dot notation field names
 in the input array to a pipe separated string of rules. The asterisk, `*`,
 can be use in the dot notation as a wildcard. For example, a set of rules
 could look like this:
+
 ```php
 // Rules Set
 $rulesSet = [
@@ -38,7 +43,7 @@ $rulesSet = [
 $input = [
     'username' => 'jbloggs',
     'firstName' => 'Joe',
-    'lastName => 'Bloggs',
+    'lastName' => 'Bloggs',
     'address' => [
         'line1' => '123 Fake St',
         'postCode' => 'AB12 3CD',
@@ -55,7 +60,7 @@ $input = [
 The following are all the validation rules that this library provides:
 
 | Rule Name                                   | Keyword             | Parameters       | Description                                                                                                    |
-|:--------------------------------------------|:--------------------|:-----------------|:---------------------------------------------------------------------------------------------------------------|
+| :------------------------------------------ | :------------------ | :--------------- | :------------------------------------------------------------------------------------------------------------- |
 | [Present](#present)                         | `present`           |                  | The field must be present but can have any value including `null`.                                             |
 | [Required](#required)                       | `required`          |                  | The field must be present and cannot be `null` (can be an empty string).                                       |
 | [Required If](#required-if)                 | `required-if`       | `field(,value)+` | The field is required if the specified field(s) and the specified value(s).                                    |
@@ -83,28 +88,30 @@ The following are all the validation rules that this library provides:
 | [Maximum String Length](#max-string-length) | `max-str-len`       | `int`            | The field should be a string and must have a `strlen` of at most the specified value.                          |
 | [String Length](#string-length)             | `str-len`           | `int`            | The field should be a string and must have a `strlen` of exactly the specified value.                          |
 | [Human Name](#human-name)                   | `human-name`        |                  | The field must be a valid human name.                                                                          |
-| [Is: ...](#is-)                             | `is`                | `type`           | The field must be of the specified basic PHP type. There must be a corresponding `is_<type>` method.           |
+| [Is: ...](#is)                              | `is`                | `type`           | The field must be of the specified basic PHP type. There must be a corresponding `is_<type>` method.           |
 | [Email](#email)                             | `email`             |                  | The field must be a valid email address                                                                        |
 | [Date](#date)                               | `date`              | `(format)?`      | The field must be a valid date in the specified format (defaults to `'Y-m-d'`).                                |
 | [URL](#url)                                 | `url`               |                  | The field must be a valid URL.                                                                                 |
 | [UUID](#uuid)                               | `uuid`              |                  | The field must be a valid UUID (\universally unique identifier).                                               |
 | [Card Number](#card-number)                 | `card-number`       |                  | The field must be a valid card number.                                                                         |
-| [Regex](#regex)                             | `regex`             | `regex pattern`  | The field must match the regex pattern.                                                                       |
-| [Not Regex](#not-regex)                     | `not-regex`         | `regex pattern`  | The field must not match the regex pattern.                                                                   |
+| [Regex](#regex)                             | `regex`             | `regex pattern`  | The field must match the regex pattern.                                                                        |
+| [Not Regex](#not-regex)                     | `not-regex`         | `regex pattern`  | The field must not match the regex pattern.                                                                    |
 
 ## Adding Extra Rules
+
 Extra rules can be added to the validator to extend its functionality to provide specific rules for your project.
 If you believe your rule should be added to the core library please submit a pull request.
 To add your extra rule you must call both `addRule` and `setRuleMessage`.
 
 ### Simple extra rule
+
 For example, if you wanted to add a rule that would validate that a timezone was valid:
 
 ```php
 // Add the rule to the validator
 $validator = new Validator;
 $validator->addRule('timezone', function (Validator $validator, array $data, $pattern, $rule) {
-    foreach ($validator->getValues($data, $pattern as $attribute => $value) {
+    foreach ($validator->getValues($data, $pattern) as $attribute => $value) {
         if (null === $value) {
             continue;
         }
@@ -126,6 +133,7 @@ $validator->validate($_POST, $rules);
 ```
 
 ### Extra rule with parameters
+
 For example, if you wanted to add a rule that would validate that an identifier existed in your database:
 
 ```php
@@ -189,10 +197,10 @@ $validator->addRule('complex', function (Validator $validator, array $data, $pat
 // No need to define a rule message as only sub-rules can generate errors
 ```
 
-
-## Validation Rules
 ### Present
+
 The field must be present but can have any value including `null`.
+
 ```php
 // Example usage:
 $rulesSet = [
@@ -201,7 +209,9 @@ $rulesSet = [
 ```
 
 ### Required
+
 The field must be present and cannot be `null` (can be an empty string).
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -210,7 +220,9 @@ $rulesSet = [
 ```
 
 ### Required If
+
 The field is required if the specified field(s) and the specified value(s).
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -220,7 +232,9 @@ $rulesSet = [
 ```
 
 ### Required With
+
 The field is required if the other field is not `null`.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -230,7 +244,9 @@ $rulesSet = [
 ```
 
 ### Required With All
+
 The field is required if all the other fields are not `null`.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -241,7 +257,9 @@ $rulesSet = [
 ```
 
 ### Required With Any
+
 The field is required if any of the other fields are not `null`.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -252,7 +270,9 @@ $rulesSet = [
 ```
 
 ### Required Without
+
 The field is required if the other field is `null`.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -261,9 +281,10 @@ $rulesSet = [
 ];
 ```
 
-
 ### Equals
+
 The field's value must be equal to the other specified field's value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -273,7 +294,9 @@ $rulesSet = [
 ```
 
 ### Not Equals
+
 The field's value must not equal the other specified field's value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -283,7 +306,9 @@ $rulesSet = [
 ```
 
 ### Identical
+
 The field's value must be identical the other specified field's value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -293,7 +318,9 @@ $rulesSet = [
 ```
 
 ### Not Identical
+
 The field's value must not be identical the other specified field's value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -302,9 +329,10 @@ $rulesSet = [
 ];
 ```
 
-
 ### In
+
 The field must equal one of the specified options.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -313,7 +341,9 @@ $rulesSet = [
 ```
 
 ### Not In
+
 The field must not equal one of the specified options.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -322,7 +352,9 @@ $rulesSet = [
 ```
 
 ### Contains
+
 The field should be an array and must contain all the specified options (may contain other values not listed).
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -331,7 +363,9 @@ $rulesSet = [
 ```
 
 ### Contains Only
+
 The field should be an array and must contain only the specified options.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -340,7 +374,9 @@ $rulesSet = [
 ```
 
 ### Min Array Count
+
 The field should be an array and must have an `array_count` of at least the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -349,7 +385,9 @@ $rulesSet = [
 ```
 
 ### Max Array Count
+
 The field should be an array and must have an `array_count` of at most the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -357,9 +395,10 @@ $rulesSet = [
 ];
 ```
 
-
 ### Min
+
 The field should be numeric and must be at least the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -368,7 +407,9 @@ $rulesSet = [
 ```
 
 ### Max
+
 The field should be numeric and must be at most the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -377,7 +418,9 @@ $rulesSet = [
 ```
 
 ### Greater Than
+
 The field should be numeric and must have a value greater than the other field.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -386,7 +429,9 @@ $rulesSet = [
 ```
 
 ### Less Than
+
 The field should be numeric and must have a value less than the other field.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -394,9 +439,10 @@ $rulesSet = [
 ];
 ```
 
-
 ### Alpha
+
 The field must only contain alphabetic characters.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -405,7 +451,9 @@ $rulesSet = [
 ```
 
 ### Alpha Numeric
+
 The field must only contain alphabetic and numerical characters.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -414,7 +462,9 @@ $rulesSet = [
 ```
 
 ### Min String Length
+
 The field should be string and must have a `strlen` of at least the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -423,7 +473,9 @@ $rulesSet = [
 ```
 
 ### Max String Length
+
 The field should be a string and must have a `strlen` of at most the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -432,7 +484,9 @@ $rulesSet = [
 ```
 
 ### String Length
+
 The field should be a string and must have a `strlen` of exactly the specified value.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -441,7 +495,9 @@ $rulesSet = [
 ```
 
 ### Human Name
+
 The field must be a valid human name.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -449,9 +505,10 @@ $rulesSet = [
 ];
 ```
 
+### Is
 
-### Is ...
 The field must be of the specified basic PHP type. There must be a corresponding `is_<type>` method.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -459,9 +516,10 @@ $rulesSet = [
 ];
 ```
 
-
 ### Email
+
 The field must be a valid email address
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -470,7 +528,9 @@ $rulesSet = [
 ```
 
 ### Date
+
 The field must be a valid date in the specified format (defaults to `'Y-m-d'`).
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -479,7 +539,9 @@ $rulesSet = [
 ```
 
 ### URL
+
 The field must be a valid URL.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -488,7 +550,9 @@ $rulesSet = [
 ```
 
 ### UUID
+
 The field must be a valid UUID (\universally unique identifier).
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -496,10 +560,11 @@ $rulesSet = [
 ];
 ```
 
-
 ### Card Number
+
 The field must be a valid card number. See
-http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php for more details.
+<http://stackoverflow.com/questions/174730/what-is-the-best-way-to-validate-a-credit-card-in-php> for more details.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -507,11 +572,12 @@ $rulesSet = [
 ];
 ```
 
-
 ### Regex
+
 The field must match the regex pattern provided as parameter.
 Specify rules in an array when using this rule, especially when the regex expression contains a | character.
-See https://www.php.net/preg_match for nore details.
+See <https://www.php.net/preg_match> for nore details.
+
 ```php
 // Example Usage
 $rulesSet = [
@@ -519,11 +585,12 @@ $rulesSet = [
 ];
 ```
 
-
 ### Not Regex
+
 The field must not match the regex pattern provided as parameter.
 Specify rules in an array when using this rule, especially when the regex expression contains a | character.
-See https://www.php.net/preg_match for nore details.
+See <https://www.php.net/preg_match> for nore details.
+
 ```php
 // Example Usage
 $rulesSet = [
