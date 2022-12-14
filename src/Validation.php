@@ -24,6 +24,7 @@ class Validation {
     private $validations = [
         Validations::class
     ];
+    private $rules = [];
     private $errors = [];
     private $error_msgs = [];
 
@@ -41,6 +42,22 @@ class Validation {
         }
     }
     public function validate(): bool {
+        if(!$this->rules){
+            return true;
+        }
+        foreach ($ruleSet as $pattern => $rules) {
+            if (is_string($rules)) {
+                $rules = explode('|', $rules);
+            }
+            foreach ($rules as $rule) {
+                list($rule, $parameters) = array_pad(explode(':', $rule, 2), 2, '');
+                $parameters = array_map('trim', explode(',', $parameters));
+
+                if (Arr::exists($this->rules, $rule)) {
+                    call_user_func($this->rules[$rule], $this, $values, $pattern, $rule, $parameters);
+                }
+            }
+        }
         return true;
     }
     private function addValidation($class) {
