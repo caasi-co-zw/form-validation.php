@@ -41,7 +41,7 @@ class Validation {
         if ($limit === false) {
         }
     }
-    public function validate(): bool {
+    public function validate($ruleSet): bool {
         if(!$this->rules){
             return true;
         }
